@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>TaskFlow</title>
+</head>
+<body>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    (async () => {
+      if (!getToken()) {
+        location.href = "login.html";
+        return;
+      }
+      try {
+        const user = await api.me();
+        setUser(user);
+        if (user.team_id === null) {
+          location.href = "team-select.html";
+        } else {
+          location.href = `kanban.html?team=${user.team_id}`;
+        }
+      } catch {
+        location.href = "login.html";
+      }
+    })();
+  </script>
+</body>
+</html>

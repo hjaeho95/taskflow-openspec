@@ -1,0 +1,17 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+*.pyc
+
+# Local dev DB
+backend/taskflow.db
+backend/.smoketest/
+
+# Editor / tooling
+.playwright-mcp/
+.claude/settings.local.json
+
+# OS
+Thumbs.db
+.DS_Store

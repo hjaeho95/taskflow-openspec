@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>로그인 - TaskFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-sm bg-white rounded-lg shadow p-8">
+    <div class="text-center mb-6">
+      <span class="inline-block bg-teal-700 text-white text-sm font-bold px-3 py-1 rounded">TaskFlow</span>
+      <h1 class="text-xl font-bold mt-4">로그인</h1>
+    </div>
+
+    <form id="login-form" class="space-y-4">
+      <input
+        id="email"
+        type="email"
+        required
+        placeholder="user@example.com"
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-600"
+      />
+      <input
+        id="password"
+        type="password"
+        required
+        placeholder="비밀번호"
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-600"
+      />
+      <p id="form-error" class="text-red-600 text-sm hidden bg-red-50 border border-red-200 rounded px-3 py-2"></p>
+
+      <button
+        id="submit-btn"
+        type="submit"
+        class="w-full bg-teal-700 text-white rounded py-2 font-semibold disabled:bg-gray-400"
+      >
+        로그인
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-gray-500 mt-4">
+      계정이 없으신가요? <a href="signup.html" class="text-teal-700 underline">회원가입</a>
+    </p>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    const form = document.getElementById("login-form");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const submitBtn = document.getElementById("submit-btn");
+    const formError = document.getElementById("form-error");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      formError.classList.add("hidden");
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "처리 중...";
+
+      try {
+        const res = await api.login(emailInput.value.trim(), passwordInput.value);
+        setToken(res.token);
+        setUser(res.user);
+        if (res.user.team_id === null) {
+          location.href = "team-select.html";
+        } else {
+          location.href = `kanban.html?team=${res.user.team_id}`;
+        }
+      } catch (err) {
+        // Deliberately generic per spec: never reveal whether the email exists.
+        formError.textContent =
+          err.code === "INVALID_CREDENTIALS"
+            ? "이메일 또는 비밀번호가 일치하지 않습니다"
+            : err.message || "로그인에 실패했습니다";
+        formError.classList.remove("hidden");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "로그인";
+      }
+    });
+  </script>
+</body>
+</html>

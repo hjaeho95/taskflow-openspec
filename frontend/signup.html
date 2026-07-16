@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>회원가입 - TaskFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-sm bg-white rounded-lg shadow p-8">
+    <div class="text-center mb-6">
+      <span class="inline-block bg-teal-700 text-white text-sm font-bold px-3 py-1 rounded">TaskFlow</span>
+      <h1 class="text-xl font-bold mt-4">회원가입</h1>
+    </div>
+
+    <form id="signup-form" class="space-y-4">
+      <div>
+        <input
+          id="email"
+          type="email"
+          required
+          placeholder="이메일 입력"
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-600"
+        />
+        <p id="email-error" class="text-red-600 text-sm mt-1 hidden"></p>
+      </div>
+      <div>
+        <input
+          id="password"
+          type="password"
+          required
+          minlength="8"
+          placeholder="비밀번호 (8자 이상)"
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-600"
+        />
+        <p id="password-error" class="text-red-600 text-sm mt-1 hidden"></p>
+      </div>
+
+      <button
+        id="submit-btn"
+        type="submit"
+        class="w-full bg-teal-700 text-white rounded py-2 font-semibold disabled:bg-gray-400"
+      >
+        가입하기
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-gray-500 mt-4">
+      이미 계정이 있으신가요? <a href="login.html" class="text-teal-700 underline">로그인</a>
+    </p>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    const form = document.getElementById("signup-form");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const submitBtn = document.getElementById("submit-btn");
+    const emailError = document.getElementById("email-error");
+    const passwordError = document.getElementById("password-error");
+
+    function clearErrors() {
+      emailError.classList.add("hidden");
+      passwordError.classList.add("hidden");
+      emailInput.classList.remove("border-red-500");
+      passwordInput.classList.remove("border-red-500");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "처리 중...";
+
+      try {
+        const res = await api.signup(emailInput.value.trim(), passwordInput.value);
+        setToken(res.token);
+        setUser(res.user);
+        location.href = "team-select.html";
+      } catch (err) {
+        if (err.code === "VALIDATION_ERROR") {
+          if (err.message.includes("email")) {
+            emailInput.classList.add("border-red-500");
+            emailError.textContent = "올바른 이메일 형식이 아닙니다";
+            emailError.classList.remove("hidden");
+          } else {
+            passwordInput.classList.add("border-red-500");
+            passwordError.textContent = "8자 이상 입력해주세요";
+            passwordError.classList.remove("hidden");
+          }
+        } else if (err.code === "EMAIL_TAKEN") {
+          emailInput.classList.add("border-red-500");
+          emailError.textContent = "이미 가입된 이메일입니다";
+          emailError.classList.remove("hidden");
+        } else {
+          emailError.textContent = err.message || "가입에 실패했습니다";
+          emailError.classList.remove("hidden");
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "가입하기";
+      }
+    });
+  </script>
+</body>
+</html>
