@@ -1,0 +1,27 @@
+TaskFlow 배포 환경 테스트 데이터
+================================
+URL: https://taskflow-openspec-xi.vercel.app
+DB: Neon PostgreSQL (production)
+생성일: 2026-07-16
+
+[계정]
+이메일: retest1@example.com
+비밀번호: password123
+user_id: 3 (team_id=2)
+
+[팀]
+이름: 재테스트 팀
+team_id: 2
+owner: retest1@example.com
+초대코드: YRIR-6488
+
+[칸반 태스크]
+#1 "재테스트 태스크" - TODO 컬럼, 담당자: retest1@example.com
+
+[채팅 메시지]
+"재테스트 메시지입니다" - retest1@example.com 발신
+
+[참고]
+- 로그인: https://taskflow-openspec-xi.vercel.app/login.html 에서 위 계정으로 로그인
+- 로그인 후 자동으로 kanban.html?team=2로 이동
+- 이 계정/팀/데이터는 삭제하지 않고 테스트용으로 유지 중
