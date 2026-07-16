@@ -4,41 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>채팅 - TaskFlow</title>
+  <script src="js/theme.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-  <header class="bg-white border-b px-4 py-3 flex justify-between items-center">
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
+  <header class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-4 py-3 flex justify-between items-center">
     <div class="flex items-center gap-4">
       <button id="hamburger-btn" class="lg:hidden text-xl" aria-label="메뉴">&#9776;</button>
-      <a id="kanban-link" href="#" class="lg:hidden text-teal-700">&#8592;</a>
-      <span class="font-bold text-teal-700">TaskFlow</span>
-      <span id="team-name" class="text-gray-500 hidden sm:inline"></span>
+      <a id="kanban-link" href="#" class="lg:hidden text-teal-700 dark:text-teal-400">&#8592;</a>
+      <span class="font-bold text-teal-700 dark:text-teal-400">TaskFlow</span>
+      <span id="team-name" class="text-gray-500 dark:text-gray-400 hidden sm:inline"></span>
     </div>
 
     <nav class="hidden lg:flex gap-2">
-      <a id="kanban-link-desktop" href="#" class="px-4 py-2 rounded border">칸반</a>
+      <a id="kanban-link-desktop" href="#" class="px-4 py-2 rounded border dark:border-gray-600">칸반</a>
       <a href="#" class="px-4 py-2 rounded bg-teal-700 text-white font-semibold">채팅</a>
-      <button id="members-btn" class="px-4 py-2 rounded border">멤버</button>
+      <button id="members-btn" class="px-4 py-2 rounded border dark:border-gray-600">멤버</button>
     </nav>
 
-    <div class="hidden lg:flex items-center gap-3 text-sm text-gray-500">
-      <span id="connection-status" class="text-emerald-600">● 5초마다 새로고침</span>
+    <div class="hidden lg:flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+      <span id="connection-status" class="text-emerald-600 dark:text-emerald-400">● 5초마다 새로고침</span>
       <button id="logout-btn" class="underline">로그아웃</button>
+      <button class="theme-toggle-btn text-lg" aria-label="테마 전환">🌙</button>
     </div>
   </header>
 
-  <div id="mobile-connection-status" class="lg:hidden text-center text-xs py-1 bg-emerald-50 text-emerald-700 hidden"></div>
+  <div id="mobile-connection-status" class="lg:hidden text-center text-xs py-1 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hidden"></div>
 
   <main class="flex-1 flex flex-col max-w-2xl w-full mx-auto p-4 overflow-hidden">
     <div id="messages-container" class="flex-1 overflow-y-auto space-y-3 pb-4"></div>
 
-    <div id="empty-state" class="hidden flex-1 flex flex-col items-center justify-center text-center text-gray-400">
+    <div id="empty-state" class="hidden flex-1 flex flex-col items-center justify-center text-center text-gray-400 dark:text-gray-500">
       <div class="text-4xl mb-2">💬</div>
-      <p class="font-semibold text-gray-600">아직 대화가 없습니다</p>
+      <p class="font-semibold text-gray-600 dark:text-gray-300">아직 대화가 없습니다</p>
       <p class="text-sm">첫 메시지를 보내 팀원과 대화를 시작하세요</p>
     </div>
 
-    <div id="composer" class="border-t pt-3">
+    <div id="composer" class="border-t dark:border-gray-700 pt-3">
       <div class="flex gap-2 items-end">
         <div class="flex-1">
           <textarea
@@ -46,9 +49,9 @@
             rows="1"
             maxlength="1010"
             placeholder="메시지 입력 (1000자 이내)..."
-            class="w-full border rounded px-3 py-2 resize-none"
+            class="w-full border rounded px-3 py-2 resize-none bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           ></textarea>
-          <p id="char-counter" class="text-xs text-gray-400 text-right"></p>
+          <p id="char-counter" class="text-xs text-gray-400 dark:text-gray-500 text-right"></p>
         </div>
         <button id="send-btn" class="bg-teal-700 text-white rounded px-4 py-2 font-semibold disabled:bg-gray-300">
           전송
@@ -60,7 +63,7 @@
   <!-- Members side panel (shared with kanban page) -->
   <div id="members-panel" class="hidden fixed inset-0 z-40">
     <div id="members-backdrop" class="absolute inset-0 bg-black/30"></div>
-    <div class="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-lg p-4 overflow-y-auto">
+    <div class="absolute right-0 top-0 bottom-0 w-80 bg-white dark:bg-gray-800 shadow-lg p-4 overflow-y-auto">
       <div class="flex justify-between items-center mb-4">
         <h2 class="font-bold">팀 멤버</h2>
         <button id="close-members-btn" class="text-gray-400">✕</button>

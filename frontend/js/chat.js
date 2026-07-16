@@ -37,9 +37,9 @@
       .map(
         (m) => `
       <li class="flex items-center gap-2 text-sm">
-        <div class="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs">${m.email[0].toUpperCase()}</div>
+        <div class="w-7 h-7 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xs">${m.email[0].toUpperCase()}</div>
         <div class="flex-1">${m.email}${m.id === user.id ? " (나)" : ""}</div>
-        ${m.role === "owner" ? '<span class="text-xs text-amber-600 font-semibold">★</span>' : ""}
+        ${m.role === "owner" ? '<span class="text-xs text-amber-600 dark:text-amber-400 font-semibold">★</span>' : ""}
       </li>`
       )
       .join("");
@@ -51,18 +51,18 @@
     return `
       <div class="flex ${isMine ? "justify-end" : "justify-start"} group" data-msg-id="${msg.id}">
         <div class="max-w-[75%]">
-          ${!isMine ? `<div class="text-xs text-gray-400 mb-1">${msg.user_email.split("@")[0]}</div>` : ""}
+          ${!isMine ? `<div class="text-xs text-gray-400 dark:text-gray-500 mb-1">${msg.user_email.split("@")[0]}</div>` : ""}
           <div class="flex items-center gap-1 ${isMine ? "flex-row-reverse" : ""}">
-            <div class="${isMine ? "bg-teal-700 text-white" : "bg-white border"} rounded-lg px-3 py-2 text-sm break-words">
+            <div class="${isMine ? "bg-teal-700 text-white" : "bg-white dark:bg-gray-800 border dark:border-gray-700"} rounded-lg px-3 py-2 text-sm break-words">
               ${escapeHtml(msg.content)}
             </div>
             ${
               isMine
-                ? `<button class="delete-msg-btn opacity-0 group-hover:opacity-100 text-red-500 text-xs" data-msg-id="${msg.id}">🗑️</button>`
+                ? `<button class="delete-msg-btn opacity-0 group-hover:opacity-100 text-red-500 dark:text-red-400 text-xs" data-msg-id="${msg.id}">🗑️</button>`
                 : ""
             }
           </div>
-          <div class="text-[10px] text-gray-300 mt-0.5 ${isMine ? "text-right" : ""}">${time}</div>
+          <div class="text-[10px] text-gray-300 dark:text-gray-600 mt-0.5 ${isMine ? "text-right" : ""}">${time}</div>
         </div>
       </div>
     `;

@@ -4,74 +4,78 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>칸반 - TaskFlow</title>
+  <script src="js/theme.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
   <!-- Header: desktop shows full nav, mobile collapses to hamburger (7.6) -->
-  <header class="bg-white border-b px-4 py-3 flex justify-between items-center relative">
+  <header class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-4 py-3 flex justify-between items-center relative">
     <div class="flex items-center gap-4">
       <button id="hamburger-btn" class="lg:hidden text-xl" aria-label="메뉴">&#9776;</button>
-      <span class="font-bold text-teal-700">TaskFlow</span>
-      <span id="team-name" class="text-gray-500 hidden sm:inline"></span>
+      <span class="font-bold text-teal-700 dark:text-teal-400">TaskFlow</span>
+      <span id="team-name" class="text-gray-500 dark:text-gray-400 hidden sm:inline"></span>
     </div>
 
     <nav class="hidden lg:flex gap-2">
       <a href="#" class="px-4 py-2 rounded bg-teal-700 text-white font-semibold">칸반</a>
-      <a id="chat-link" href="#" class="px-4 py-2 rounded border">채팅</a>
-      <button id="members-btn" class="px-4 py-2 rounded border">멤버</button>
+      <a id="chat-link" href="#" class="px-4 py-2 rounded border dark:border-gray-600">채팅</a>
+      <button id="members-btn" class="px-4 py-2 rounded border dark:border-gray-600">멤버</button>
     </nav>
 
-    <div class="hidden lg:flex items-center gap-3 text-sm text-gray-500">
+    <div class="hidden lg:flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
       <span id="user-email"></span>
       <button id="logout-btn" class="underline">로그아웃</button>
+      <button class="theme-toggle-btn text-lg" aria-label="테마 전환">🌙</button>
     </div>
   </header>
 
   <!-- Mobile hamburger slide menu (7.6) -->
   <div id="mobile-menu" class="hidden lg:hidden fixed inset-0 z-40">
     <div id="mobile-menu-backdrop" class="absolute inset-0 bg-black/30"></div>
-    <div class="absolute left-0 top-0 bottom-0 w-64 bg-white shadow-lg p-4 flex flex-col">
-      <div class="flex items-center gap-2 pb-4 border-b mb-4">
+    <div class="absolute left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-lg p-4 flex flex-col">
+      <div class="flex items-center gap-2 pb-4 border-b dark:border-gray-700 mb-4">
         <div class="w-8 h-8 rounded-full bg-teal-700 text-white flex items-center justify-center text-sm" id="mobile-avatar">U</div>
         <div>
           <div class="text-sm font-medium" id="mobile-user-email"></div>
-          <div class="text-xs text-gray-400" id="mobile-team-name"></div>
+          <div class="text-xs text-gray-400 dark:text-gray-500" id="mobile-team-name"></div>
         </div>
       </div>
-      <a href="#" class="py-2 px-2 rounded bg-teal-50 text-teal-700 font-semibold mb-1">📋 칸반</a>
+      <a href="#" class="py-2 px-2 rounded bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-300 font-semibold mb-1">📋 칸반</a>
       <a id="mobile-chat-link" href="#" class="py-2 px-2 rounded mb-1">💬 채팅</a>
       <button id="mobile-members-btn" class="text-left py-2 px-2 rounded mb-1">👥 팀 멤버</button>
+      <button class="theme-toggle-btn text-left py-2 px-2 rounded mb-1">🌙 테마 전환</button>
       <div class="flex-1"></div>
-      <button id="mobile-logout-btn" class="text-left py-2 px-2 rounded text-red-600">🚪 로그아웃</button>
+      <button id="mobile-logout-btn" class="text-left py-2 px-2 rounded text-red-600 dark:text-red-400">🚪 로그아웃</button>
     </div>
   </div>
 
   <!-- Members side panel -->
   <div id="members-panel" class="hidden fixed inset-0 z-40">
     <div id="members-backdrop" class="absolute inset-0 bg-black/30"></div>
-    <div class="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-lg p-4 overflow-y-auto">
+    <div class="absolute right-0 top-0 bottom-0 w-80 bg-white dark:bg-gray-800 shadow-lg p-4 overflow-y-auto">
       <div class="flex justify-between items-center mb-4">
         <h2 class="font-bold">팀 멤버</h2>
         <button id="close-members-btn" class="text-gray-400">✕</button>
       </div>
       <ul id="members-list" class="space-y-2"></ul>
-      <hr class="my-4" />
-      <button id="leave-team-btn" class="w-full text-red-600 border border-red-200 rounded py-2 text-sm mb-2">
+      <hr class="my-4 dark:border-gray-700" />
+      <button id="leave-team-btn" class="w-full text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900 rounded py-2 text-sm mb-2">
         팀 나가기
       </button>
-      <button id="delete-account-btn" class="w-full text-red-600 border border-red-200 rounded py-2 text-sm">
+      <button id="delete-account-btn" class="w-full text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900 rounded py-2 text-sm">
         계정 삭제
       </button>
     </div>
   </div>
 
   <div id="delete-account-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg w-full max-w-sm p-6 text-center">
+    <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-sm p-6 text-center">
       <p class="text-3xl mb-2">⚠️</p>
       <p class="font-semibold mb-1">정말 계정을 삭제하시겠습니까?</p>
-      <p class="text-sm text-gray-500 mb-6" id="delete-account-detail"></p>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6" id="delete-account-detail"></p>
       <div class="flex gap-2">
-        <button id="delete-account-cancel-btn" class="flex-1 border rounded py-2">취소</button>
+        <button id="delete-account-cancel-btn" class="flex-1 border dark:border-gray-600 rounded py-2">취소</button>
         <button id="delete-account-confirm-btn" class="flex-1 bg-red-600 text-white rounded py-2">삭제</button>
       </div>
     </div>
@@ -80,13 +84,13 @@
   <!-- Kanban board -->
   <main class="p-4">
     <div class="flex gap-2 mb-4">
-      <button data-filter="" class="filter-btn px-3 py-1 rounded bg-gray-900 text-white text-sm">전체</button>
-      <button data-filter="me" class="filter-btn px-3 py-1 rounded border text-sm">@me</button>
-      <button data-filter="unassigned" class="filter-btn px-3 py-1 rounded border text-sm">미할당</button>
+      <button data-filter="" class="filter-btn px-3 py-1 rounded bg-gray-900 dark:bg-gray-100 dark:text-gray-900 text-white text-sm">전체</button>
+      <button data-filter="me" class="filter-btn px-3 py-1 rounded border dark:border-gray-600 text-sm">@me</button>
+      <button data-filter="unassigned" class="filter-btn px-3 py-1 rounded border dark:border-gray-600 text-sm">미할당</button>
     </div>
 
     <!-- Mobile: swipeable single-column with tabs (7.2). Desktop: 3 columns. -->
-    <div class="lg:hidden flex mb-2 border-b" id="mobile-column-tabs">
+    <div class="lg:hidden flex mb-2 border-b dark:border-gray-700" id="mobile-column-tabs">
       <button data-status="TODO" class="mobile-col-tab flex-1 py-2 text-sm font-semibold border-b-2 border-teal-700">TODO</button>
       <button data-status="DOING" class="mobile-col-tab flex-1 py-2 text-sm font-semibold border-b-2 border-transparent text-gray-400">DOING</button>
       <button data-status="DONE" class="mobile-col-tab flex-1 py-2 text-sm font-semibold border-b-2 border-transparent text-gray-400">DONE</button>
@@ -94,25 +98,25 @@
 
     <div id="board" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div class="kanban-col" data-status="TODO">
-        <div class="rounded-t bg-amber-100 px-3 py-2 flex justify-between items-center">
+        <div class="rounded-t bg-amber-100 dark:bg-amber-950 px-3 py-2 flex justify-between items-center">
           <span class="font-semibold text-sm">TODO · <span class="col-count">0</span></span>
-          <button class="add-card-btn text-amber-700 font-bold" data-status="TODO">+</button>
+          <button class="add-card-btn text-amber-700 dark:text-amber-400 font-bold" data-status="TODO">+</button>
         </div>
-        <div class="col-body bg-white border border-t-0 rounded-b min-h-[200px] p-2 space-y-2" data-status="TODO"></div>
+        <div class="col-body bg-white dark:bg-gray-800 border dark:border-gray-700 border-t-0 rounded-b min-h-[200px] p-2 space-y-2" data-status="TODO"></div>
       </div>
       <div class="kanban-col" data-status="DOING">
-        <div class="rounded-t bg-blue-100 px-3 py-2 flex justify-between items-center">
+        <div class="rounded-t bg-blue-100 dark:bg-blue-950 px-3 py-2 flex justify-between items-center">
           <span class="font-semibold text-sm">DOING · <span class="col-count">0</span></span>
-          <button class="add-card-btn text-blue-700 font-bold" data-status="DOING">+</button>
+          <button class="add-card-btn text-blue-700 dark:text-blue-400 font-bold" data-status="DOING">+</button>
         </div>
-        <div class="col-body bg-white border border-t-0 rounded-b min-h-[200px] p-2 space-y-2" data-status="DOING"></div>
+        <div class="col-body bg-white dark:bg-gray-800 border dark:border-gray-700 border-t-0 rounded-b min-h-[200px] p-2 space-y-2" data-status="DOING"></div>
       </div>
       <div class="kanban-col" data-status="DONE">
-        <div class="rounded-t bg-emerald-100 px-3 py-2 flex justify-between items-center">
+        <div class="rounded-t bg-emerald-100 dark:bg-emerald-950 px-3 py-2 flex justify-between items-center">
           <span class="font-semibold text-sm">DONE · <span class="col-count">0</span></span>
-          <button class="add-card-btn text-emerald-700 font-bold" data-status="DONE">+</button>
+          <button class="add-card-btn text-emerald-700 dark:text-emerald-400 font-bold" data-status="DONE">+</button>
         </div>
-        <div class="col-body bg-white border border-t-0 rounded-b min-h-[200px] p-2 space-y-2" data-status="DONE"></div>
+        <div class="col-body bg-white dark:bg-gray-800 border dark:border-gray-700 border-t-0 rounded-b min-h-[200px] p-2 space-y-2" data-status="DONE"></div>
       </div>
     </div>
   </main>
@@ -122,45 +126,45 @@
 
   <!-- Card detail / edit modal -->
   <div id="task-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg w-full max-w-md p-6">
+    <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md p-6">
       <div class="flex justify-between items-start mb-4">
         <div>
-          <span class="text-xs text-gray-400" id="modal-task-id"></span>
+          <span class="text-xs text-gray-400 dark:text-gray-500" id="modal-task-id"></span>
           <h3 class="font-bold" id="modal-task-title-display"></h3>
         </div>
         <button id="modal-close-btn" class="text-gray-400">✕</button>
       </div>
 
-      <label class="block text-sm text-gray-500 mb-1">제목</label>
-      <input id="modal-title-input" class="w-full border rounded px-3 py-2 mb-4" maxlength="100" />
+      <label class="block text-sm text-gray-500 dark:text-gray-400 mb-1">제목</label>
+      <input id="modal-title-input" class="w-full border rounded px-3 py-2 mb-4 bg-white dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" maxlength="100" />
 
-      <label class="block text-sm text-gray-500 mb-1">상태</label>
+      <label class="block text-sm text-gray-500 dark:text-gray-400 mb-1">상태</label>
       <div class="flex gap-2 mb-4">
-        <button data-status="TODO" class="modal-status-btn flex-1 border rounded py-2 text-sm">TODO</button>
-        <button data-status="DOING" class="modal-status-btn flex-1 border rounded py-2 text-sm">DOING</button>
-        <button data-status="DONE" class="modal-status-btn flex-1 border rounded py-2 text-sm">DONE</button>
+        <button data-status="TODO" class="modal-status-btn flex-1 border dark:border-gray-600 rounded py-2 text-sm">TODO</button>
+        <button data-status="DOING" class="modal-status-btn flex-1 border dark:border-gray-600 rounded py-2 text-sm">DOING</button>
+        <button data-status="DONE" class="modal-status-btn flex-1 border dark:border-gray-600 rounded py-2 text-sm">DONE</button>
       </div>
 
-      <label class="block text-sm text-gray-500 mb-1">담당자</label>
-      <select id="modal-assignee-select" class="w-full border rounded px-3 py-2 mb-4"></select>
+      <label class="block text-sm text-gray-500 dark:text-gray-400 mb-1">담당자</label>
+      <select id="modal-assignee-select" class="w-full border rounded px-3 py-2 mb-4 bg-white dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"></select>
 
-      <p class="text-xs text-gray-400 mb-4" id="modal-meta"></p>
+      <p class="text-xs text-gray-400 dark:text-gray-500 mb-4" id="modal-meta"></p>
 
       <div class="flex gap-2">
         <button id="modal-save-btn" class="flex-1 bg-teal-700 text-white rounded py-2 font-semibold">저장</button>
-        <button id="modal-delete-btn" class="border border-red-300 text-red-600 rounded py-2 px-4">🗑 삭제</button>
+        <button id="modal-delete-btn" class="border border-red-300 dark:border-red-900 text-red-600 dark:text-red-400 rounded py-2 px-4">🗑 삭제</button>
       </div>
     </div>
   </div>
 
   <!-- Delete confirm dialog -->
   <div id="delete-confirm-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg w-full max-w-sm p-6 text-center">
+    <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-sm p-6 text-center">
       <p class="text-3xl mb-2">⚠️</p>
       <p class="font-semibold mb-1">이 카드를 삭제하시겠습니까?</p>
-      <p class="text-sm text-gray-400 mb-6" id="delete-confirm-detail"></p>
+      <p class="text-sm text-gray-400 dark:text-gray-500 mb-6" id="delete-confirm-detail"></p>
       <div class="flex gap-2">
-        <button id="delete-cancel-btn" class="flex-1 border rounded py-2">취소</button>
+        <button id="delete-cancel-btn" class="flex-1 border dark:border-gray-600 rounded py-2">취소</button>
         <button id="delete-confirm-btn" class="flex-1 bg-red-600 text-white rounded py-2">삭제</button>
       </div>
     </div>
@@ -168,12 +172,12 @@
 
   <!-- Owner leave-team warning dialog (4.9) -->
   <div id="leave-warning-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg w-full max-w-sm p-6 text-center">
+    <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-sm p-6 text-center">
       <p class="text-3xl mb-2">⚠️</p>
       <p class="font-semibold mb-1" id="leave-warning-title">정말 팀을 나가시겠습니까?</p>
-      <p class="text-sm text-gray-500 mb-6" id="leave-warning-detail"></p>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6" id="leave-warning-detail"></p>
       <div class="flex gap-2">
-        <button id="leave-cancel-btn" class="flex-1 border rounded py-2">취소</button>
+        <button id="leave-cancel-btn" class="flex-1 border dark:border-gray-600 rounded py-2">취소</button>
         <button id="leave-confirm-btn" class="flex-1 bg-red-600 text-white rounded py-2">나가기</button>
       </div>
     </div>

@@ -33,11 +33,11 @@
       const li = document.createElement("li");
       li.className = "flex items-center gap-2 text-sm";
       li.innerHTML = `
-        <div class="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs">${m.email[0].toUpperCase()}</div>
+        <div class="w-7 h-7 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xs">${m.email[0].toUpperCase()}</div>
         <div class="flex-1">
           <div>${m.email}${m.id === user.id ? " (나)" : ""}</div>
         </div>
-        ${m.role === "owner" ? '<span class="text-xs text-amber-600 font-semibold">★ owner</span>' : '<span class="text-xs text-gray-400">member</span>'}
+        ${m.role === "owner" ? '<span class="text-xs text-amber-600 dark:text-amber-400 font-semibold">★ owner</span>' : '<span class="text-xs text-gray-400 dark:text-gray-500">member</span>'}
       `;
       list.appendChild(li);
     });
@@ -63,13 +63,13 @@
     const assignee = members.find((m) => m.id === task.assignee_id);
     const badge =
       task.assignee_id === null
-        ? '<span class="text-xs bg-amber-100 text-amber-700 px-1 rounded">미할당</span>'
-        : `<span class="text-xs text-gray-400">@${assignee ? assignee.email.split("@")[0] : task.assignee_id}</span>`;
+        ? '<span class="text-xs bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400 px-1 rounded">미할당</span>'
+        : `<span class="text-xs text-gray-400 dark:text-gray-500">@${assignee ? assignee.email.split("@")[0] : task.assignee_id}</span>`;
     return `
-      <div class="task-card bg-white border rounded p-2 cursor-pointer shadow-sm hover:shadow" draggable="true" data-id="${task.id}">
+      <div class="task-card bg-white dark:bg-gray-900 border dark:border-gray-700 rounded p-2 cursor-pointer shadow-sm hover:shadow" draggable="true" data-id="${task.id}">
         <div class="text-sm font-medium">${escapeHtml(task.title)}</div>
         <div class="flex justify-between items-center mt-1">
-          <span class="text-xs text-gray-400">#${task.id}</span>
+          <span class="text-xs text-gray-400 dark:text-gray-500">#${task.id}</span>
           ${badge}
         </div>
       </div>
@@ -94,10 +94,10 @@
       if (colTasks.length === 0) {
         const ctaHtml =
           status === "TODO"
-            ? `<button class="empty-add-btn text-teal-700 font-semibold text-sm mt-2" data-status="TODO">+ 첫 태스크 만들기</button>`
-            : `<p class="text-xs text-gray-300 mt-2">드래그로 이동</p>`;
+            ? `<button class="empty-add-btn text-teal-700 dark:text-teal-400 font-semibold text-sm mt-2" data-status="TODO">+ 첫 태스크 만들기</button>`
+            : `<p class="text-xs text-gray-300 dark:text-gray-600 mt-2">드래그로 이동</p>`;
         body.innerHTML = `
-          <div class="flex flex-col items-center justify-center text-center py-8 text-gray-400">
+          <div class="flex flex-col items-center justify-center text-center py-8 text-gray-400 dark:text-gray-500">
             <div class="text-2xl mb-2">📋</div>
             <p class="text-sm">카드 없음</p>
             ${ctaHtml}
@@ -126,10 +126,10 @@
   document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".filter-btn").forEach((b) => {
-        b.classList.remove("bg-gray-900", "text-white");
+        b.classList.remove("bg-gray-900", "text-white", "dark:bg-gray-100", "dark:text-gray-900");
         b.classList.add("border");
       });
-      btn.classList.add("bg-gray-900", "text-white");
+      btn.classList.add("bg-gray-900", "text-white", "dark:bg-gray-100", "dark:text-gray-900");
       btn.classList.remove("border");
       currentFilter = btn.dataset.filter;
       loadTasks();
@@ -182,11 +182,11 @@
     if (body.querySelector(".inline-create-form")) return;
 
     const form = document.createElement("div");
-    form.className = "inline-create-form border-2 border-teal-600 rounded p-2 bg-teal-50";
+    form.className = "inline-create-form border-2 border-teal-600 rounded p-2 bg-teal-50 dark:bg-teal-950";
     form.innerHTML = `
-      <input class="inline-title w-full border rounded px-2 py-1 text-sm mb-1" placeholder="태스크 제목" autofocus />
-      <select class="inline-assignee w-full border rounded px-2 py-1 text-xs mb-1"></select>
-      <p class="text-xs text-gray-400">Enter: 저장 · Esc: 취소</p>
+      <input class="inline-title w-full border rounded px-2 py-1 text-sm mb-1 bg-white dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100" placeholder="태스크 제목" autofocus />
+      <select class="inline-assignee w-full border rounded px-2 py-1 text-xs mb-1 bg-white dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"></select>
+      <p class="text-xs text-gray-400 dark:text-gray-500">Enter: 저장 · Esc: 취소</p>
     `;
     body.prepend(form);
 

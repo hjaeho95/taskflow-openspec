@@ -4,39 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>팀 선택 - TaskFlow</title>
+  <script src="js/theme.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
 </head>
-<body class="bg-gray-50 min-h-screen">
-  <header class="bg-white border-b px-6 py-3 flex justify-between items-center">
-    <span class="font-bold text-teal-700">TaskFlow</span>
-    <div class="text-sm text-gray-500">
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
+  <header class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-6 py-3 flex justify-between items-center">
+    <span class="font-bold text-teal-700 dark:text-teal-400">TaskFlow</span>
+    <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
       <span id="user-email"></span> |
       <button id="logout-btn" class="underline">로그아웃</button> |
-      <button id="delete-account-btn" class="underline text-red-600">계정 삭제</button>
+      <button id="delete-account-btn" class="underline text-red-600 dark:text-red-400">계정 삭제</button> |
+      <button class="theme-toggle-btn text-lg" aria-label="테마 전환">🌙</button>
     </div>
   </header>
 
   <div id="delete-account-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg w-full max-w-sm p-6 text-center">
+    <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-sm p-6 text-center">
       <p class="text-3xl mb-2">⚠️</p>
       <p class="font-semibold mb-1">정말 계정을 삭제하시겠습니까?</p>
-      <p class="text-sm text-gray-500 mb-6">
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
         로그인이 영구적으로 불가능해집니다. 소속된 팀이 있다면 나가기(owner인 경우 팀 전체 삭제)가 함께 처리됩니다.
       </p>
       <div class="flex gap-2">
-        <button id="delete-account-cancel-btn" class="flex-1 border rounded py-2">취소</button>
+        <button id="delete-account-cancel-btn" class="flex-1 border dark:border-gray-600 rounded py-2">취소</button>
         <button id="delete-account-confirm-btn" class="flex-1 bg-red-600 text-white rounded py-2">삭제</button>
       </div>
     </div>
   </div>
 
   <main class="max-w-3xl mx-auto px-4 py-10">
-    <div class="bg-blue-50 border border-blue-200 text-blue-800 rounded px-4 py-3 mb-8 text-sm">
+    <div class="bg-blue-50 border border-blue-200 text-blue-800 rounded px-4 py-3 mb-8 text-sm dark:bg-blue-950 dark:border-blue-900 dark:text-blue-300">
       아직 팀에 소속되지 않았습니다. 팀을 만들거나 초대코드로 합류하세요.
     </div>
 
     <div class="grid sm:grid-cols-2 gap-6">
-      <div class="border border-dashed rounded-lg p-6">
+      <div class="border border-dashed dark:border-gray-700 rounded-lg p-6">
         <h2 class="font-bold mb-4">+ 새 팀 만들기</h2>
         <form id="create-team-form" class="space-y-3">
           <input
@@ -44,9 +47,9 @@
             required
             maxlength="30"
             placeholder="팀 이름 (1-30자)"
-            class="w-full border rounded px-3 py-2"
+            class="w-full border rounded px-3 py-2 bg-white dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
           />
-          <p id="create-error" class="text-red-600 text-sm hidden"></p>
+          <p id="create-error" class="text-red-600 dark:text-red-400 text-sm hidden"></p>
           <button
             type="submit"
             class="w-full bg-teal-700 text-white rounded py-2 font-semibold"
@@ -56,16 +59,16 @@
         </form>
       </div>
 
-      <div class="border border-dashed rounded-lg p-6">
+      <div class="border border-dashed dark:border-gray-700 rounded-lg p-6">
         <h2 class="font-bold mb-4">초대코드로 합류</h2>
         <form id="join-team-form" class="space-y-3">
           <input
             id="invite-code"
             required
             placeholder="ABCD-1234"
-            class="w-full border rounded px-3 py-2 uppercase"
+            class="w-full border rounded px-3 py-2 uppercase bg-white dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
           />
-          <p id="join-hint" class="text-gray-400 text-xs">형식: 대문자 4 + 숫자 4 (하이픈 포함)</p>
+          <p id="join-hint" class="text-gray-400 dark:text-gray-500 text-xs">형식: 대문자 4 + 숫자 4 (하이픈 포함)</p>
           <p id="join-error" class="text-sm hidden rounded px-3 py-2"></p>
           <button
             type="submit"
@@ -135,14 +138,14 @@
       } catch (err) {
         input.classList.add("border-red-500");
         let text = err.message || "합류에 실패했습니다";
-        let styleClass = "bg-red-50 border border-red-200 text-red-700";
+        let styleClass = "bg-red-50 border border-red-200 text-red-700 dark:bg-red-950 dark:border-red-900 dark:text-red-300";
         if (err.code === "VALIDATION_ERROR") {
           text = "형식이 올바르지 않습니다";
         } else if (err.code === "NOT_FOUND") {
           text = "해당 초대코드를 찾을 수 없습니다";
         } else if (err.code === "ALREADY_IN_TEAM") {
           text = "이미 다른 팀에 소속되어 있습니다";
-          styleClass = "bg-amber-50 border border-amber-200 text-amber-800";
+          styleClass = "bg-amber-50 border border-amber-200 text-amber-800 dark:bg-amber-950 dark:border-amber-900 dark:text-amber-300";
         }
         errorEl.textContent = text;
         errorEl.className = `text-sm rounded px-3 py-2 ${styleClass}`;
