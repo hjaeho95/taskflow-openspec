@@ -4,7 +4,7 @@
     { "src": "frontend/**", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/(auth|teams|tasks|messages|health)(.*)", "dest": "api/index.py" },
+    { "src": "/(auth|teams|tasks|messages|health|docs|redoc|openapi.json)(.*)", "dest": "api/index.py" },
     { "src": "/$", "dest": "frontend/index.html" },
     { "src": "/(.*)", "dest": "frontend/$1" }
   ]
