@@ -88,7 +88,7 @@
 
 ## 9. 배포
 
-- [ ] 9.1 Neon PostgreSQL 프로젝트 생성 및 `DATABASE_URL` 환경변수 등록 (Vercel)
-- [ ] 9.2 Vercel 프로젝트 연결 (프론트 정적 파일 + 백엔드 Serverless Functions)
-- [ ] 9.3 운영 환경에 마이그레이션 적용
-- [ ] 9.4 운영 배포 후 핵심 플로우(가입→로그인→팀→칸반→채팅) 스모크 테스트
+- [x] 9.1 Neon PostgreSQL 프로젝트 생성 및 `DATABASE_URL` 환경변수 등록 (Vercel) — Vercel Neon 통합으로 `neon-emerald-mountain` 프로비저닝
+- [x] 9.2 Vercel 프로젝트 연결 (프론트 정적 파일 + 백엔드 Serverless Functions) — `api/index.py` + `vercel.json`으로 구성, CLI 수동 배포 (GitHub 자동 연동은 계정 미연결로 보류)
+- [x] 9.3 운영 환경에 마이그레이션 적용 — `alembic upgrade head`로 Neon DB에 `0001_initial_schema` 적용
+- [x] 9.4 운영 배포 후 핵심 플로우(가입→로그인→팀→칸반→채팅) 스모크 테스트 — Playwright로 실제 브라우저 재현, 로그인 버그(`||` vs `??`) 발견 후 수정·재배포·재검증 완료
