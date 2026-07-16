@@ -1,4 +1,4 @@
-const API_BASE = window.TASKFLOW_API_BASE || "http://localhost:8000";
+const API_BASE = window.TASKFLOW_API_BASE ?? "http://localhost:8000";
 
 function getToken() {
   return localStorage.getItem("token");
