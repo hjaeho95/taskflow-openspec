@@ -1,0 +1,29 @@
+# dark-mode Specification
+
+## Purpose
+
+TBD - created by archiving change add-dark-mode. Update Purpose after archive.
+
+## Requirements
+
+### Requirement: 테마 전환
+시스템은 모든 페이지에서 사용자가 라이트/다크 테마를 토글하는 것을 SHALL 지원해야 한다.
+
+#### Scenario: 다크모드로 전환
+- **WHEN** 사용자가 테마 토글 버튼을 클릭했을 때 현재 테마가 라이트인 경우
+- **THEN** 시스템은 즉시 다크 테마를 적용한다 (배경/텍스트/보더 색상이 다크 팔레트로 전환됨)
+
+#### Scenario: 라이트모드로 전환
+- **WHEN** 사용자가 테마 토글 버튼을 클릭했을 때 현재 테마가 다크인 경우
+- **THEN** 시스템은 즉시 라이트 테마를 적용한다
+
+### Requirement: 테마 유지
+시스템은 사용자가 선택한 테마를 브라우저의 `localStorage`에 SHALL 저장해야 하며, 재방문/새로고침 시 저장된 테마를 자동으로 적용해야 한다. 테마 선택은 계정에 종속되지 않고 기기/브라우저 단위로 유지된다.
+
+#### Scenario: 새로고침 후 테마 유지
+- **WHEN** 사용자가 다크 테마를 선택한 상태에서 페이지를 새로고침
+- **THEN** 시스템은 페이지 로드 시 저장된 다크 테마를 즉시 적용한다
+
+#### Scenario: 최초 방문 시 기본값
+- **WHEN** `localStorage`에 저장된 테마 값이 없는 사용자가 처음 방문
+- **THEN** 시스템은 라이트 테마를 기본값으로 적용한다
