@@ -28,6 +28,15 @@ class AppError(Exception):
         return cls(401, "INVALID_CREDENTIALS", "이메일 또는 비밀번호가 일치하지 않습니다")
 
     @classmethod
+    def account_locked(cls, retry_after_seconds: int):
+        return cls(
+            423,
+            "ACCOUNT_LOCKED",
+            "로그인 시도가 너무 많아 잠시 후 다시 시도해주세요",
+            {"retry_after_seconds": retry_after_seconds},
+        )
+
+    @classmethod
     def token_expired(cls):
         return cls(401, "TOKEN_EXPIRED", "인증이 만료되었습니다")
 

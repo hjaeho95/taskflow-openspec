@@ -395,6 +395,29 @@
     }
   });
 
+  // --- Delete account (soft-delete, cascades team if owner) ---
+  document.getElementById("delete-account-btn").addEventListener("click", () => {
+    const isOwner = team.owner_id === user.id;
+    document.getElementById("delete-account-detail").textContent = isOwner
+      ? "당신은 이 팀의 owner입니다. 계정을 삭제하면 팀이 삭제되고 모든 태스크와 채팅 이력이 사라집니다. 로그인도 영구적으로 불가능해집니다."
+      : "팀에서 나가고 로그인이 영구적으로 불가능해집니다.";
+    membersPanel.classList.add("hidden");
+    document.getElementById("delete-account-modal").classList.remove("hidden");
+  });
+  document.getElementById("delete-account-cancel-btn").addEventListener("click", () => {
+    document.getElementById("delete-account-modal").classList.add("hidden");
+  });
+  document.getElementById("delete-account-confirm-btn").addEventListener("click", async () => {
+    try {
+      await api.deleteAccount();
+      clearToken();
+      localStorage.removeItem("user");
+      location.href = "login.html";
+    } catch (err) {
+      alert(err.message || "계정 삭제에 실패했습니다");
+    }
+  });
+
   window.addEventListener("resize", renderBoard);
 
   await loadTeamAndMembers();

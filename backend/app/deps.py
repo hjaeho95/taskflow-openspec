@@ -23,7 +23,7 @@ async def get_current_user(
         raise AppError.token_expired()
 
     user = await db.get(User, user_id)
-    if user is None:
+    if user is None or user.deleted_at is not None:
         raise AppError.token_expired()
     return user
 

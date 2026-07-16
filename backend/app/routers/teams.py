@@ -83,15 +83,12 @@ async def list_members(
     ]
 
 
-@router.delete("/{team_id}/leave", status_code=status.HTTP_200_OK)
-async def leave_team(
-    team: Team = Depends(require_team_member),
-    current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
-):
+async def leave_current_team(db: AsyncSession, current_user: User, team: Team) -> None:
+    """Removes current_user from `team`. Owner leaving cascade-deletes the whole
+    team (design.md decision #8); Deleting the Team row cascades tasks/messages
+    via ON DELETE CASCADE. Shared by the team-leave endpoint and account deletion.
+    """
     if current_user.id == team.owner_id:
-        # Owner leaving: cascade-delete the whole team (design.md decision #8).
-        # Deleting the Team row cascades tasks/messages via ON DELETE CASCADE.
         remaining_member_ids = (
             await db.scalars(select(User.id).where(User.team_id == team.id))
         ).all()
@@ -104,5 +101,13 @@ async def leave_team(
     else:
         current_user.team_id = None
 
+
+@router.delete("/{team_id}/leave", status_code=status.HTTP_200_OK)
+async def leave_team(
+    team: Team = Depends(require_team_member),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    await leave_current_team(db, current_user, team)
     await db.commit()
     return {}

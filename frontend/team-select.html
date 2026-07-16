@@ -11,9 +11,24 @@
     <span class="font-bold text-teal-700">TaskFlow</span>
     <div class="text-sm text-gray-500">
       <span id="user-email"></span> |
-      <button id="logout-btn" class="underline">로그아웃</button>
+      <button id="logout-btn" class="underline">로그아웃</button> |
+      <button id="delete-account-btn" class="underline text-red-600">계정 삭제</button>
     </div>
   </header>
+
+  <div id="delete-account-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg w-full max-w-sm p-6 text-center">
+      <p class="text-3xl mb-2">⚠️</p>
+      <p class="font-semibold mb-1">정말 계정을 삭제하시겠습니까?</p>
+      <p class="text-sm text-gray-500 mb-6">
+        로그인이 영구적으로 불가능해집니다. 소속된 팀이 있다면 나가기(owner인 경우 팀 전체 삭제)가 함께 처리됩니다.
+      </p>
+      <div class="flex gap-2">
+        <button id="delete-account-cancel-btn" class="flex-1 border rounded py-2">취소</button>
+        <button id="delete-account-confirm-btn" class="flex-1 bg-red-600 text-white rounded py-2">삭제</button>
+      </div>
+    </div>
+  </div>
 
   <main class="max-w-3xl mx-auto px-4 py-10">
     <div class="bg-blue-50 border border-blue-200 text-blue-800 rounded px-4 py-3 mb-8 text-sm">
@@ -74,6 +89,23 @@
     })();
 
     document.getElementById("logout-btn").addEventListener("click", doLogout);
+
+    document.getElementById("delete-account-btn").addEventListener("click", () => {
+      document.getElementById("delete-account-modal").classList.remove("hidden");
+    });
+    document.getElementById("delete-account-cancel-btn").addEventListener("click", () => {
+      document.getElementById("delete-account-modal").classList.add("hidden");
+    });
+    document.getElementById("delete-account-confirm-btn").addEventListener("click", async () => {
+      try {
+        await api.deleteAccount();
+        clearToken();
+        localStorage.removeItem("user");
+        location.href = "login.html";
+      } catch (err) {
+        alert(err.message || "계정 삭제에 실패했습니다");
+      }
+    });
 
     document.getElementById("create-team-form").addEventListener("submit", async (e) => {
       e.preventDefault();

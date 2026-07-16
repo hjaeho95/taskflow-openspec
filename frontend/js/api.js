@@ -38,7 +38,12 @@ async function apiFetch(path, options = {}) {
     throw { code: "NETWORK_ERROR", message: "네트워크 연결을 확인해주세요" };
   }
 
-  if (res.status === 401) {
+  const isJson = res.headers.get("content-type")?.includes("application/json");
+  const body = isJson ? await res.json().catch(() => ({})) : {};
+
+  // Only auto-logout on an actually expired/invalid token, not on any 401
+  // (e.g. /auth/login's own INVALID_CREDENTIALS is also a 401).
+  if (res.status === 401 && body.error?.code === "TOKEN_EXPIRED") {
     clearToken();
     localStorage.removeItem("user");
     if (!location.pathname.endsWith("/login.html")) {
@@ -46,9 +51,6 @@ async function apiFetch(path, options = {}) {
     }
     throw { code: "TOKEN_EXPIRED", message: "인증이 만료되었습니다" };
   }
-
-  const isJson = res.headers.get("content-type")?.includes("application/json");
-  const body = isJson ? await res.json().catch(() => ({})) : {};
 
   if (!res.ok) {
     const err = body.error || { code: "UNKNOWN_ERROR", message: "요청을 처리할 수 없습니다" };
@@ -65,6 +67,7 @@ const api = {
     apiFetch("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
   logout: () => apiFetch("/auth/logout", { method: "POST" }),
   me: () => apiFetch("/auth/me"),
+  deleteAccount: () => apiFetch("/auth/me", { method: "DELETE" }),
 
   createTeam: (name) =>
     apiFetch("/teams", { method: "POST", body: JSON.stringify({ name }) }),

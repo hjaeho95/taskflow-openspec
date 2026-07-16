@@ -56,9 +56,24 @@
       </div>
       <ul id="members-list" class="space-y-2"></ul>
       <hr class="my-4" />
-      <button id="leave-team-btn" class="w-full text-red-600 border border-red-200 rounded py-2 text-sm">
+      <button id="leave-team-btn" class="w-full text-red-600 border border-red-200 rounded py-2 text-sm mb-2">
         팀 나가기
       </button>
+      <button id="delete-account-btn" class="w-full text-red-600 border border-red-200 rounded py-2 text-sm">
+        계정 삭제
+      </button>
+    </div>
+  </div>
+
+  <div id="delete-account-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg w-full max-w-sm p-6 text-center">
+      <p class="text-3xl mb-2">⚠️</p>
+      <p class="font-semibold mb-1">정말 계정을 삭제하시겠습니까?</p>
+      <p class="text-sm text-gray-500 mb-6" id="delete-account-detail"></p>
+      <div class="flex gap-2">
+        <button id="delete-account-cancel-btn" class="flex-1 border rounded py-2">취소</button>
+        <button id="delete-account-confirm-btn" class="flex-1 bg-red-600 text-white rounded py-2">삭제</button>
+      </div>
     </div>
   </div>
 

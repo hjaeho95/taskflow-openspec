@@ -18,6 +18,9 @@ class User(Base):
     # enforced at the application layer (team_management service).
     team_id: Mapped[int | None] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    deleted_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    failed_login_count: Mapped[int] = mapped_column(nullable=False, default=0, server_default="0")
+    locked_until: Mapped[datetime | None] = mapped_column(nullable=True)
 
     __table_args__ = (Index("ix_users_team_id", "team_id"),)
 
